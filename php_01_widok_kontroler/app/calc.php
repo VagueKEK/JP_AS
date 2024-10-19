@@ -8,66 +8,55 @@ require_once dirname(__FILE__).'/../config.php';
 
 // 1. pobranie parametrów
 
-$x = $_REQUEST ['x'];
-$y = $_REQUEST ['y'];
-$operation = $_REQUEST ['op'];
+$amount = $_REQUEST ['amount'];
+$years = $_REQUEST ['years'];
+$interest = $_REQUEST ['interest'];
 
 // 2. walidacja parametrów z przygotowaniem zmiennych dla widoku
 
 // sprawdzenie, czy parametry zostały przekazane
-if ( ! (isset($x) && isset($y) && isset($operation))) {
+if ( ! (isset($amount) && isset($years) && isset($interest))) {
 	//sytuacja wystąpi kiedy np. kontroler zostanie wywołany bezpośrednio - nie z formularza
 	$messages [] = 'Błędne wywołanie aplikacji. Brak jednego z parametrów.';
 }
 
 // sprawdzenie, czy potrzebne wartości zostały przekazane
-if ( $x == "") {
-	$messages [] = 'Nie podano liczby 1';
+if ( $amount == "") {
+	$messages [] = 'Nie podano kwoty kredytu';
 }
-if ( $y == "") {
-	$messages [] = 'Nie podano liczby 2';
+if ( $years == "") {
+	$messages [] = 'Nie podano liczby lat';
+}
+
+if ( $interest == "") {
+	$messages [] = 'Nie podano oprocentowania';
 }
 
 //nie ma sensu walidować dalej gdy brak parametrów
-if (empty( $messages )) {
-	
-	// sprawdzenie, czy $x i $y są liczbami całkowitymi
-	if (! is_numeric( $x )) {
-		$messages [] = 'Pierwsza wartość nie jest liczbą całkowitą';
-	}
-	
-	if (! is_numeric( $y )) {
-		$messages [] = 'Druga wartość nie jest liczbą całkowitą';
-	}	
-
+if (empty($messages)) {
+    if (!is_numeric($amount) || $amount <= 0) {
+        $messages[] = 'Kwota kredytu nie jest poprawną liczbą dodatnią';
+    }
+    if (!is_numeric($years) || $years <= 0 || intval($years) != $years) {
+        $messages[] = 'Liczba lat nie jest poprawną liczbą całkowitą dodatnią';
+    }
+    if (!is_numeric($interest) || $interest < 0) {
+        $messages[] = 'Oprocentowanie nie jest poprawną wartością';
+    }
 }
 
-// 3. wykonaj zadanie jeśli wszystko w porządku
+if (empty($messages)) {
+    $amount = floatval($amount);
+    $years = intval($years);
+    $interest = floatval($interest) / 100; // Konwersja procent na format dziesiętny
 
-if (empty ( $messages )) { // gdy brak błędów
-	
-	//konwersja parametrów na int
-	$x = intval($x);
-	$y = intval($y);
-	
-	//wykonanie operacji
-	switch ($operation) {
-		case 'minus' :
-			$result = $x - $y;
-			break;
-		case 'times' :
-			$result = $x * $y;
-			break;
-		case 'div' :
-			$result = $x / $y;
-			break;
-		default :
-			$result = $x + $y;
-			break;
-	}
+    // Obliczanie miesięcznej raty kredytu 
+    $m = 12; // Liczba miesięcy w roku
+    $n = $years * $m; // Łączna liczba rat
+    $R = $amount * pow(1 + ($interest / $m), $n) * ($interest / $m) / (pow(1 + ($interest / $m), $n) - 1);
+	//zaokrąglenie do 2 miejsc po przecinku
+	$R = round($R, 2);
+    $result = $R;
 }
 
-// 4. Wywołanie widoku z przekazaniem zmiennych
-// - zainicjowane zmienne ($messages,$x,$y,$operation,$result)
-//   będą dostępne w dołączonym skrypcie
 include 'calc_view.php';

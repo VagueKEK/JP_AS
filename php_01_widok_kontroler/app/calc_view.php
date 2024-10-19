@@ -3,22 +3,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
 <head>
 <meta charset="utf-8" />
-<title>Kalkulator</title>
+<title>Kalkulator kredytowy</title>
 </head>
 <body>
 
 <form action="<?php print(_APP_URL);?>/app/calc.php" method="post">
-	<label for="id_x">Liczba 1: </label>
-	<input id="id_x" type="text" name="x" value="<?php print($x); ?>" /><br />
-	<label for="id_op">Operacja: </label>
-	<select name="op">
-		<option value="plus">+</option>
-		<option value="minus">-</option>
-		<option value="times">*</option>
-		<option value="div">/</option>
-	</select><br />
-	<label for="id_y">Liczba 2: </label>
-	<input id="id_y" type="text" name="y" value="<?php print($y); ?>" /><br />
+	<label for="id_amount">Kwota kredytu: </label><br/>
+	<input id="id_amount" type="text" name="amount" value="<?php echo isset($amount) ? $amount : ''; ?>" /><br />
+	<label for="id_years">Liczba lat:  </label><br/>
+	<input id="id_years" type="numbers" name="years" value="<?php echo isset($years) ? $years : ''; ?>" /><br />
+	<label for="id_interest">Oprocentowanie roczne (%): </label><br/>
+	<input id="id_interest" type="numbers" name="interest" value="<?php echo isset($interest) ? $interest : ''; ?>" /><br />
 	<input type="submit" value="Oblicz" />
 </form>	
 
@@ -37,7 +32,7 @@ if (isset($messages)) {
 
 <?php if (isset($result)){ ?>
 <div style="margin: 20px; padding: 10px; border-radius: 5px; background-color: #ff0; width:300px;">
-<?php echo 'Wynik: '.$result; ?>
+<?php echo 'Miesięczna rata kredytu: '.$result.' zł'; ?>
 </div>
 <?php } ?>
 
