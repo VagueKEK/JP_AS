@@ -18,22 +18,14 @@
 
 <div style="width:90%; margin: 2em auto;">
 
-<form action="<?php print(_APP_ROOT); ?>/app/calc.php" method="post" class="pure-form pure-form-stacked">
-	<legend>Kalkulator</legend>
-	<fieldset>
-		<label for="id_x">Liczba 1: </label>
-		<input id="id_x" type="text" name="x" value="<?php out($x) ?>" />
-		<label for="id_op">Operacja: </label>
-		<select name="op">	
-			<option value="plus">+</option>
-			<option value="minus">-</option>
-			<option value="times">*</option>
-			<option value="div">/</option>
-		</select>
-		<label for="id_y">Liczba 2: </label>
-		<input id="id_y" type="text" name="y" value="<?php out($y) ?>" />
-	</fieldset>	
-	<input type="submit" value="Oblicz" class="pure-button pure-button-primary" />
+	<form action="<?php print(_APP_URL);?>/app/calc.php" method="post">
+	<label for="id_amount">Kwota kredytu: </label><br/>
+	<input id="id_amount" type="text" name="amount" value="<?php echo isset($amount) ? $amount : ''; ?>" /><br />
+	<label for="id_years">Liczba lat:  </label><br/>
+	<input id="id_years" type="numbers" name="years" value="<?php echo isset($years) ? $years : ''; ?>" /><br />
+	<label for="id_interest">Oprocentowanie roczne (%): </label><br/>
+	<input id="id_interest" type="numbers" name="interest" value="<?php echo isset($interest) ? $interest : ''; ?>" /><br />
+	<input type="submit" value="Oblicz" />
 </form>	
 
 <?php

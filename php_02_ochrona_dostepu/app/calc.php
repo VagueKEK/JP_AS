@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/../config.php';
+require_once dirname(__FILE__) . '/../config.php';
 
 // KONTROLER strony kalkulatora
 
@@ -8,91 +8,93 @@ require_once dirname(__FILE__).'/../config.php';
 // Parametry do widoku przekazujemy przez zmienne.
 
 //ochrona kontrolera - poniższy skrypt przerwie przetwarzanie w tym punkcie gdy użytkownik jest niezalogowany
-include _ROOT_PATH.'/app/security/check.php';
+include _ROOT_PATH . '/app/security/check.php';
 
 //pobranie parametrów
-function getParams(&$x,&$y,&$operation){
-	$x = isset($_REQUEST['x']) ? $_REQUEST['x'] : null;
-	$y = isset($_REQUEST['y']) ? $_REQUEST['y'] : null;
-	$operation = isset($_REQUEST['op']) ? $_REQUEST['op'] : null;	
+function getParams(&$amount, &$years, &$interest)
+{
+	$amount = isset($_REQUEST['amount']) ? $_REQUEST['amount'] : null;
+	$years = isset($_REQUEST['years']) ? $_REQUEST['years'] : null;
+	$interest = isset($_REQUEST['interest']) ? $_REQUEST['interest'] : null;
 }
 
 //walidacja parametrów z przygotowaniem zmiennych dla widoku
-function validate(&$x,&$y,&$operation,&$messages){
+function validate(&$amount, &$years, &$interest, &$messages)
+{
 	// sprawdzenie, czy parametry zostały przekazane
-	if ( ! (isset($x) && isset($y) && isset($operation))) {
+	if (!(isset($amount) && isset($years) && isset($interest))) {
 		// sytuacja wystąpi kiedy np. kontroler zostanie wywołany bezpośrednio - nie z formularza
 		// teraz zakładamy, ze nie jest to błąd. Po prostu nie wykonamy obliczeń
 		return false;
 	}
 
 	// sprawdzenie, czy potrzebne wartości zostały przekazane
-	if ( $x == "") {
-		$messages [] = 'Nie podano liczby 1';
+	if ($amount == "") {
+		$messages[] = 'Nie podano kwoty';
 	}
-	if ( $y == "") {
-		$messages [] = 'Nie podano liczby 2';
+	if ($years == "") {
+		$messages[] = 'Nie podano liczby lat';
+	}
+	if ($interest == "") {
+		$messages[] = 'Nie podano oprocentowania';
 	}
 
 	//nie ma sensu walidować dalej gdy brak parametrów
-	if (count ( $messages ) != 0) return false;
-	
-	// sprawdzenie, czy $x i $y są liczbami całkowitymi
-	if (! is_numeric( $x )) {
-		$messages [] = 'Pierwsza wartość nie jest liczbą całkowitą';
-	}
-	
-	if (! is_numeric( $y )) {
-		$messages [] = 'Druga wartość nie jest liczbą całkowitą';
-	}	
+	if (count($messages) != 0) return false;
 
-	if (count ( $messages ) != 0) return false;
+	// sprawdzenie, czy $x i $y są liczbami całkowitymi
+	if (!is_numeric($amount)) {
+		$messages[] = 'Kwota kredytu nie jest poprawną liczbą dodatnią';
+	}
+
+	if (!is_numeric($years)) {
+		$messages[] = 'Liczba lat nie jest poprawną liczbą całkowitą dodatnią';
+	}
+
+	if (!is_numeric($interest)) {
+		$messages[] = 'Oprocentowanie nie jest poprawną wartością';
+	}
+
+	if (count($messages) != 0) return false;
 	else return true;
 }
 
-function process(&$x,&$y,&$operation,&$messages,&$result){
+function process(&$amount, &$years, &$interest, &$messages, &$result)
+{
 	global $role;
-	
-	//konwersja parametrów na int
-	$x = intval($x);
-	$y = intval($y);
-	
-	//wykonanie operacji
-	switch ($operation) {
-		case 'minus' :
-			if ($role == 'admin'){
-				$result = $x - $y;
-			} else {
-				$messages [] = 'Tylko administrator może odejmować !';
-			}
-			break;
-		case 'times' :
-			$result = $x * $y;
-			break;
-		case 'div' :
-			if ($role == 'admin'){
-				$result = $x / $y;
-			} else {
-				$messages [] = 'Tylko administrator może dzielić !';
-			}
-			break;
-		default :
-			$result = $x + $y;
-			break;
+
+	//konwersja parametrów
+	$amount = floatval($amount);
+	$years = intval($years);
+	$interest = floatval($interest); // Konwersja procent na format dziesiętny
+	// Obliczanie miesięcznej raty kredytu 
+	$months = 12; // Liczba miesięcy w roku
+	$total_months = $years * $months; // Łączna liczba rat
+
+	if ($interest > 5) {
+		if ($role == 'admin') {
+			$result = $amount * pow(1 + (($interest / 100) / $months), $total_months) * (($interest / 100) / $months) / (pow(1 + (($interest / 100) / $months), $total_months) - 1);
+		} else {
+			$messages[] = 'Ta opcja jest dotępna tylko dla administratora';
+		}
+	} else {
+		$result = $amount * pow(1 + (($interest / 100) / $months), $total_months) * (($interest / 100) / $months) / (pow(1 + (($interest / 100) / $months), $total_months) - 1);
+		//zaokrąglenie do 2 miejsc po przecinku
+		$result = round($result, 2);
 	}
 }
 
 //definicja zmiennych kontrolera
-$x = null;
-$y = null;
-$operation = null;
+$amount = null;
+$years = null;
+$interest = null;
 $result = null;
 $messages = array();
 
 //pobierz parametry i wykonaj zadanie jeśli wszystko w porządku
-getParams($x,$y,$operation);
-if ( validate($x,$y,$operation,$messages) ) { // gdy brak błędów
-	process($x,$y,$operation,$messages,$result);
+getParams($amount, $years, $interest);
+if (validate($amount, $years, $interest, $messages)) { // gdy brak błędów
+	process($amount, $years, $interest, $messages, $result);
 }
 
 // Wywołanie widoku z przekazaniem zmiennych
