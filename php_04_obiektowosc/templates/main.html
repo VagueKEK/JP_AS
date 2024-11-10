@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>{$page_title|default:"Tytuł domyślny"}</title> 
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+                <meta name="description" content="{$page_description|default:"Opis domyślny"}">
+		<link rel="stylesheet" href="{$conf->app_url}/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="{$conf->app_url}/assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="{$conf->app_url}/index.php">Kalkulator kredytowy</a></h1>
+						<nav>
+                                                    <ul class="actions small">
+                                                            <li><a href="{$conf->app_url}/index.php" class="button small">Strona główna</a></li>
+                                                    </ul>
+                                        </nav>
+					</header>
+				<!-- Wrapper -->
+					<section id="wrapper">
+						<header>
+							<div class="inner">
+								<h2>Kalkulator kredytowy</h2>
+								<p>Oblicz swoją miesięczną ratę!</p>
+							</div>
+						</header>
+
+						<!-- Content -->
+						{block name=content} Domyślna treść zawartości .... {/block}
+					</section>
+
+				<!-- Footer -->
+					<section id="footer">
+						<div class="inner">
+							<ul class="copyright">
+								<li>&copy; {block name=footer} Domyślna treść zawartości .... {/block}. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{$conf->app_url}assets/js/jquery.min.js"></script>
+			<script src="{$conf->app_url}assets/js/jquery.scrollex.min.js"></script>
+			<script src="{$conf->app_url}assets/js/browser.min.js"></script>
+			<script src="{$conf->app_url}assets/js/breakpoints.min.js"></script>
+			<script src="{$conf->app_url}assets/js/util.js"></script>
+			<script src="{$conf->app_url}assets/js/main.js"></script>
+
+	</body>
+</html>
