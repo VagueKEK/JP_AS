@@ -42,41 +42,55 @@ class LoginCtrl {
         }
         
         try {
+            // Pobranie użytkownika na podstawie emaila
             $user = App::getDB()->get("users", "*", [
                 "email" => $this->form->login
             ]);
 
-            if ($user && password_verify($this->form->password, $user["password"])) {
-                $userRoles = App::getDB()->select("user_roles", [
-                    "[><]roles" => ["role_id" => "id"]
-                ], [
-                    "roles.role_name"
-                ], [
-                    "user_roles.user_id" => $user["id"]
-                ]);
+            // Sprawdzenie, czy użytkownik istnieje
+            if ($user) {
+                // Sprawdzenie, czy użytkownik jest aktywny
+                if ($user["active"] == 0) {
+                    App::getMessages()->addMessage(new Message('Twoje konto jest nieaktywne. Skontaktuj się z administratorem.', Message::ERROR));
+                    return false;
+                }
 
-                if ($userRoles) {
-                    $roles = array_column($userRoles, "role_name");
+                // Weryfikacja hasła
+                if (password_verify($this->form->password, $user["password"])) {
+                    // Pobranie ról użytkownika
+                    $userRoles = App::getDB()->select("user_roles", [
+                        "[><]roles" => ["role_id" => "id"]
+                    ], [
+                        "roles.role_name"
+                    ], [
+                        "user_roles.user_id" => $user["id"]
+                    ]);
 
-                    $userObj = new User(
-                        $user["id"],
-                        $user["name"],
-                        $user["surname"],
-                        $user["email"],
-                        $roles,
-                        $this->form->login
-                    );
+                    if ($userRoles) {
+                        $roles = array_column($userRoles, "role_name");
 
-                    SessionUtils::store("user", $userObj);
-                    SessionUtils::store("user_id", $user[0]["idUser"]);
+                        $userObj = new User(
+                            $user["id"],
+                            $user["name"],
+                            $user["surname"],
+                            $user["email"],
+                            $roles,
+                            $this->form->login
+                        );
 
-                    foreach ($roles as $role) {
-                        RoleUtils::addRole($role);
+                        SessionUtils::store("user", $userObj);
+                        SessionUtils::store("user_id", $user["id"]);
+
+                        foreach ($roles as $role) {
+                            RoleUtils::addRole($role);
+                        }
+
+                        return true;
+                    } else {
+                        App::getMessages()->addMessage(new Message('Nie znaleziono roli użytkownika.', Message::ERROR));
                     }
-
-                    return true;
                 } else {
-                    App::getMessages()->addMessage(new Message('Nie znaleziono roli użytkownika.', Message::ERROR));
+                    App::getMessages()->addMessage(new Message('Nieprawidłowy login lub hasło.', Message::ERROR));
                 }
             } else {
                 App::getMessages()->addMessage(new Message('Nieprawidłowy login lub hasło.', Message::ERROR));
