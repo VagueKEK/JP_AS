@@ -64,22 +64,27 @@ class UserEditCtrl {
         }
 
         try {
+            // Pobierz bieżącą datę
+            $currentDate = date('Y-m-d H:i:s');
+
+            // Aktualizacja danych użytkownika w tabeli `users`
             App::getDB()->update("users", [
                 "name" => $this->form->name,
                 "surname" => $this->form->surname,
                 "email" => $this->form->email,
                 "active" => $this->form->active,
-                
+                "modification_date" => $currentDate // Dodanie daty modyfikacji
             ], [
                 "id" => $this->form->id
             ]);
 
+            // Aktualizacja roli użytkownika w tabeli `user_roles`
             App::getDB()->update("user_roles", [
-                "role_id" => $this->form->role // ustaw taką rolę jak wybrałeś w formie
-                    ],
-                    [
-                    "user_id" => $this->form->id // z id usera wyświetlonego do edycji
-                ]);
+                "role_id" => $this->form->role
+            ], [
+                "user_id" => $this->form->id
+            ]);
+
             Utils::addInfoMessage('Pomyślnie zapisano zmiany.');
         } catch (\PDOException $e) {
             Utils::addErrorMessage('Wystąpił błąd podczas zapisywania rekordu.');

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.2.1, created on 2025-01-10 20:12:10
+/* Smarty version 4.2.1, created on 2025-01-10 21:39:02
   from 'C:\xampp\htdocs\conferenceroom\app\views\EmployeeUsersView.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.2.1',
-  'unifunc' => 'content_6781710a114ed7_98479682',
+  'unifunc' => 'content_67818566475391_99357762',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '27d5708eb36a4b6969dae9afc4bc4742cf1487ba' => 
     array (
       0 => 'C:\\xampp\\htdocs\\conferenceroom\\app\\views\\EmployeeUsersView.tpl',
-      1 => 1732660755,
+      1 => 1736541541,
       2 => 'file',
     ),
   ),
@@ -21,32 +21,32 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:EmployeeUsersTable.tpl' => 1,
   ),
 ),false)) {
-function content_6781710a114ed7_98479682 (Smarty_Internal_Template $_smarty_tpl) {
+function content_67818566475391_99357762 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, true);
 ?>
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_977312566781710a074807_62386730', 'footer');
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_1082993001678185664671d1_34066319', 'footer');
 ?>
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_8289957196781710a075773_99933104', 'p_description');
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_178830445867818566467a05_72053986', 'p_description');
 ?>
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_8091655906781710a075e97_87306056', 'top');
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_79245210867818566467f81_01320658', 'top');
 ?>
 
 <?php $_smarty_tpl->inheritance->endChild($_smarty_tpl, "main.tpl");
 }
 /* {block 'footer'} */
-class Block_977312566781710a074807_62386730 extends Smarty_Internal_Block
+class Block_1082993001678185664671d1_34066319 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'footer' => 
   array (
-    0 => 'Block_977312566781710a074807_62386730',
+    0 => 'Block_1082993001678185664671d1_34066319',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
@@ -56,12 +56,12 @@ Jakub Painta<?php
 }
 /* {/block 'footer'} */
 /* {block 'p_description'} */
-class Block_8289957196781710a075773_99933104 extends Smarty_Internal_Block
+class Block_178830445867818566467a05_72053986 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'p_description' => 
   array (
-    0 => 'Block_8289957196781710a075773_99933104',
+    0 => 'Block_178830445867818566467a05_72053986',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
@@ -71,12 +71,12 @@ public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
 }
 /* {/block 'p_description'} */
 /* {block 'top'} */
-class Block_8091655906781710a075e97_87306056 extends Smarty_Internal_Block
+class Block_79245210867818566467f81_01320658 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'top' => 
   array (
-    0 => 'Block_8091655906781710a075e97_87306056',
+    0 => 'Block_79245210867818566467f81_01320658',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
@@ -119,8 +119,10 @@ addUser" method="post">
                 <div class="col-12">
                     <input type="submit" class="primary" value="Dodaj użytkownika">
                 </div>
-
             </div>
+            <br />
+            <hr />
+            <h1>Edycja użytkownika</h1>
         </form>
         <form id="filterForm" action="<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_root;?>
 employeeUsers" method="post" onsubmit="ajaxPostForm('filterForm', '<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_root;?>

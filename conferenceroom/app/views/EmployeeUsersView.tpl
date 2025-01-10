@@ -38,8 +38,10 @@
                 <div class="col-12">
                     <input type="submit" class="primary" value="Dodaj użytkownika">
                 </div>
-
             </div>
+            <br />
+            <hr />
+            <h1>Edycja użytkownika</h1>
         </form>
         <form id="filterForm" action="{$conf->action_root}employeeUsers" method="post" onsubmit="ajaxPostForm('filterForm', '{$conf->action_root}employeeUsers', 'userList'); return false;">
             <label for="filterSurname">Filtruj po nazwisku:</label>
