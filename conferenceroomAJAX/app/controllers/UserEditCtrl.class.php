@@ -23,12 +23,21 @@ class UserEditCtrl {
     public function action_userEdit() {
         if ($this->validate()) {
             try {
-                $record = App::getDB()->get("users", "*", [
-                    "id" => $this->id
+                $record = App::getDB()->get("users", [
+                    "[><]user_roles" => ["id" => "user_id"],
+                    "[><]roles" => ["user_roles.role_id" => "id"]
+                ], [
+                    "users.name",
+                    "users.surname",
+                    "users.email",
+                    "users.active",
+                    "roles.id(role)"
+                ], [
+                    "users.id" => $this->id
                 ]);
 
                 if ($record) {
-                    $this->form->id = $record['id'];
+                    $this->form->id = $this->id;
                     $this->form->name = $record['name'];
                     $this->form->surname = $record['surname'];
                     $this->form->email = $record['email'];
