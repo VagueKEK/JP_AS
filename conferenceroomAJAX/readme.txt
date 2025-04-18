@@ -1,0 +1,1 @@
+implementacja AJAX znajduje się w panelu zarządzania użytkownikami - administrator
