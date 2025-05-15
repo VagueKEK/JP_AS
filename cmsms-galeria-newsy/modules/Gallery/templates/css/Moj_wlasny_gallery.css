@@ -1,0 +1,28 @@
+.custom-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding-bottom: 50px;
+}
+
+.gallery-box img {
+  width: 300px;
+  height: auto;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+
+
+.gallery-box:hover {
+  transform: scale(1.05);
+}
+
+.gallery-box img {
+  display: block;
+  width: 200px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+}
